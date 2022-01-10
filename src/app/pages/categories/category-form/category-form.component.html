@@ -1,14 +1,11 @@
-<nav class="mb-5">
-    <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a routerLink="/">Home</a></li>
-        <li class="breadcrumb-item"><a routerLink="/categories">Categorias</a></li>
-        <li class="breadcrumb-item active">Formulário de categorias</li>
-    </ol>
-</nav>
+<app-bread-crumb 
+    [items]="[{text: 'Categorias', link: '/categories'}, {text: pageTitle}]"
+>
+</app-bread-crumb>
+
 <div class="row mb-4">
     <div class="col-md">
         <h1 class="h2 bprder-left pl-2">Formulário de categoria</h1>
-        {{this.pageTitle}}
     </div>
     <div class="col-md">
         <a routerLink="/categories" class="btn btn-light float-end">
