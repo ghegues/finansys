@@ -1,116 +1,103 @@
-<app-bread-crumb 
-    [items]="[{text: 'Lançamentos', link: '/entries'}, {text: pageTitle}]"
->
+<app-bread-crumb [items]="[{text: 'Lançamentos', link: '/entries'}, {text: pageTitle}]">
 </app-bread-crumb>
 
-<app-page-header 
-    [button-link]="'/entries'" 
-    [button-text]="'<< Voltar'" 
-    [button-class]="'btn-light'" 
-    [page-title]="pageTitle"
->
+<app-page-header [button-link]="'/entries'" [button-text]="'<< Voltar'" [button-class]="'btn-light'"
+  [page-title]="pageTitle">
 
 </app-page-header>
 
 
 <form [formGroup]="resourceForm" (submit)="submitForm()">
-    <div class="card">
-        <div class="card-header">Informações sobre a categoria</div>
-        <div class="mx-2">
-            <div class="row g-2 mt-2">
-                <!-- Type -->
-                <div class="col-md-2">
-                    <div class="form-floating">
-                    
-                    <select name="type" id="type" formControlName="type"  class="form-select">
-                        <option *ngFor="let item of typeOptions" [value]="item.value">{{item.text}}</option>
-                    </select>
-    
-                    <label for="type">Tipo</label>               
-                    <div class="text-danger" *ngIf="resourceForm.get('type').invalid && (resourceForm.get('type').dirty || resourceForm.get('type').touched)">
-                        <div  *ngIf="resourceForm.get('type').errors?.['required']">tipo é obrigatório</div>
-                    </div>
-                    </div>
-                </div>            
-                <!-- Name -->
-                <div class="col-md-5">
-                <div class="form-floating">
-                    <input type="text" class="form-control" id="name" placeholder="Lazer" formControlName="name"  >
-                    <label for="name">Lançamento</label>               
-                    <div class="text-danger" *ngIf="resourceForm.get('name').invalid && (resourceForm.get('name').dirty || resourceForm.get('name').touched)">
-                        <div  *ngIf="resourceForm.get('name').errors?.['required']">lançamento é obrigatório</div>
-                        <div *ngIf="resourceForm.get('name').errors?.['minlength']">deve ter no mínimo 2 caracteres</div>
-                    </div>
-                </div>
-                </div>
-                <!-- Amount -->
-                <div class="col-md-3">
-                    <div class="form-floating input-group input-group-lg">
-                        <span class="input-group-text" id="basic-addon1">R$</span>
-                        <input type="text" [imask]="imaskConfig" class="form-control text-end" id="amount" placeholder="10,00"  formControlName="amount">
-                    </div>
-                    <div class="text-danger" *ngIf="resourceForm.get('amount').invalid && (resourceForm.get('amount').dirty || resourceForm.get('amount').touched)">
-                        <div  *ngIf="resourceForm.get('amount').errors?.['required']">valor é obrigatório</div>
-                    </div>
-                </div>
+  <div class="card">
+    <div class="card-header">Informações sobre a categoria</div>
+    <div class="mx-2">
+      <div class="row g-2 mt-2">
+        <!-- Type -->
+        <div class="col-md-2">
+          <div class="form-floating">
 
-            </div>        
-            <div class="row g-2 mt-2">
-                <!--Tipo pagamento-->
-                <div class="form-group col-md-2">
-                    <div class="btn-group" role="group" aria-label="Pago">                      
-                        <label (click)="resourceForm.get('paid').setValue(true)"  [class.active]="resourceForm.get('paid').value == true"    class="btn btn-outline-primary" for="Pago">Pago</label>                      
-                        <label (click)="resourceForm.get('paid').setValue(false)" [class.active]="resourceForm.get('paid').value == false"    class="btn btn-outline-primary" for="Pago">Pendente</label>
-                      </div>
-                </div>
-                <!--Categoria-->
-                <div class="col-md-2">
-                    <div class="form-floating">                    
-                    <select name="categoryId" id="categoryId" formControlName="categoryId"  class="form-select">
-                        <option *ngFor="let category of categories" [value]="category.id" >{{ category.name }}</option>
-                        
-                    </select>
-    
-                    <label for="categoryId">Categoria</label>               
-                    <div class="text-danger" *ngIf="resourceForm.get('categoryId').invalid && (resourceForm.get('categoryId').dirty || resourceForm.get('categoryId').touched)">
-                        <div  *ngIf="resourceForm.get('categoryId').errors?.['required']">tipo é obrigatório</div>
-                    </div>
-                    </div>
-                </div>       
-                <!-- Descrição -->
-                <div class="col-md-6">
-                    <div class="form-floating">
-                        <input type="text" class="form-control" id="description" placeholder="Lazer"  formControlName="description">
-                        <label for="description">Descrição</label>
-                    </div>
-                </div>
-            </div>
-            <div class="row g-2 mt-2">
-                <!-- Date -->
-                <div class="col-md-2 mb-2">
-                
-                    <label for="date">Data</label>
-                
-                    <p-calendar 
-                        id="date"
-                        formControlName="date"
-                        inputStyleClass="form-control"
-                        dataType="string"
-                        dateFormat="dd/mm/yy">
+            <select name="type" id="type" formControlName="type" class="form-select">
+              <option *ngFor="let item of typeOptions" [value]="item.value">{{item.text}}</option>
+            </select>
 
-                    </p-calendar>
-                </div>               
-                <div class="text-danger" *ngIf="resourceForm.get('date').invalid && (resourceForm.get('date').dirty || resourceForm.get('date').touched)">
-                    <div  *ngIf="resourceForm.get('date').errors?.['required']">Data é obrigatório</div>
-                </div>
-            </div>    
-        </div>    
+            <label for="type">Tipo</label>
+
+            <app-form-field-error [form-control]="resourceForm.get('type')"></app-form-field-error>
+
+          </div>
+        </div>
+        <!-- Name -->
+        <div class="col-md-5">
+          <div class="form-floating">
+            <input type="text" class="form-control" id="name" placeholder="Lazer" formControlName="name">
+            <label for="name">Lançamento</label>
+            <app-form-field-error [form-control]="resourceForm.get('name')"></app-form-field-error>
+          </div>
+        </div>
+        <!-- Amount -->
+        <div class="col-md-3">
+          <div class="form-floating input-group input-group-lg">
+            <span class="input-group-text" id="basic-addon1">R$</span>
+            <input type="text" [imask]="imaskConfig" class="form-control text-end" id="amount" placeholder="10,00"
+              formControlName="amount">
+          </div>
+          <app-form-field-error [form-control]="resourceForm.get('amount')"></app-form-field-error>
+        </div>
+
+      </div>
+      <div class="row g-2 mt-2">
+        <!--Tipo pagamento-->
+        <div class="form-group col-md-2">
+          <div class="btn-group" role="group" aria-label="Pago">
+            <label (click)="resourceForm.get('paid').setValue(true)"
+              [class.active]="resourceForm.get('paid').value == true" class="btn btn-outline-primary"
+              for="Pago">Pago</label>
+            <label (click)="resourceForm.get('paid').setValue(false)"
+              [class.active]="resourceForm.get('paid').value == false" class="btn btn-outline-primary"
+              for="Pago">Pendente</label>
+          </div>
+        </div>
+        <!--Categoria-->
+        <div class="col-md-2">
+          <div class="form-floating">
+            <select name="categoryId" id="categoryId" formControlName="categoryId" class="form-select">
+              <option *ngFor="let category of categories" [value]="category.id">{{ category.name }}</option>
+            </select>
+
+            <label for="categoryId">Categoria</label>
+            <app-form-field-error [form-control]="resourceForm.get('categoryId')"></app-form-field-error>
+
+          </div>
+        </div>
+        <!-- Descrição -->
+        <div class="col-md-6">
+          <div class="form-floating">
+            <input type="text" class="form-control" id="description" placeholder="Lazer" formControlName="description">
+            <label for="description">Descrição</label>
+          </div>
+        </div>
+      </div>
+      <div class="row g-2 mt-2">
+        <!-- Date -->
+        <div class="col-md-2 mb-2">
+
+          <label for="date">Data</label>
+
+          <p-calendar id="date" formControlName="date" inputStyleClass="form-control" dataType="string"
+            dateFormat="dd/mm/yy">
+
+          </p-calendar>
+        </div>
+        <app-form-field-error [form-control]="resourceForm.get('date')"></app-form-field-error>
+      </div>
     </div>
-    <div *ngIf="serverErrorMessages.length > 0" class="alert alert-danger mt-4">
-        <strong>Erro no servidor</strong>
-        <ul *ngFor="let erro of serverErrorMessages ">
-            <li> {{erro}} </li>
-        </ul>
-    </div>
-    <button  [disabled]="submittingForm || resourceForm.invalid" type="submit" class="btn btn-dark btn-lg float-end mt-3">Salvar</button>
+  </div>
+  <div *ngIf="serverErrorMessages.length > 0" class="alert alert-danger mt-4">
+    <strong>Erro no servidor</strong>
+    <ul *ngFor="let erro of serverErrorMessages ">
+      <li> {{erro}} </li>
+    </ul>
+  </div>
+  <button [disabled]="submittingForm || resourceForm.invalid" type="submit"
+    class="btn btn-dark btn-lg float-end mt-3">Salvar</button>
 </form>
