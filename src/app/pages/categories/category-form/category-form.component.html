@@ -1,0 +1,48 @@
+<nav class="mb-5">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a routerLink="/">Home</a></li>
+        <li class="breadcrumb-item"><a routerLink="/categories">Categorias</a></li>
+        <li class="breadcrumb-item active">Formulário de categorias</li>
+    </ol>
+</nav>
+<div class="row mb-4">
+    <div class="col-md">
+        <h1 class="h2 bprder-left pl-2">Formulário de categoria</h1>
+        {{this.pageTitle}}
+    </div>
+    <div class="col-md">
+        <a routerLink="/categories" class="btn btn-light float-end">
+            << Voltar
+        </a>
+    </div>
+</div>
+<form [formGroup]="resourceForm" (submit)="submitForm()">
+    <div class="card">
+        <div class="card-header">Informações sobre a categoria</div>
+        <div class="row g-2">
+            <div class="col-md-4">
+              <div class="form-floating">
+                <input type="text" class="form-control" id="name" placeholder="Lazer" formControlName="name"  >
+                <label for="name">Nome</label>               
+                <div class="text-danger" *ngIf="resourceForm.get('name').invalid && (resourceForm.get('name').dirty || resourceForm.get('name').touched)">
+                    <div  *ngIf="resourceForm.get('name').errors?.['required']">nome é obrigatório</div>
+                    <div *ngIf="resourceForm.get('name').errors?.['minlength']">deve ter no mínimo 2 caracteres</div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-8">
+                <div class="form-floating">
+                  <input type="text" class="form-control" id="description" placeholder="Lazer"  formControlName="description">
+                  <label for="description">Descrição</label>
+                </div>
+              </div>
+          </div>
+        </div>
+        <div *ngIf="serverErrorMessages.length > 0" class="alert alert-danger mt-4">
+            <strong>Erro no servidor</strong>
+            <ul *ngFor="let erro of serverErrorMessages ">
+                <li> {{erro}} </li>
+            </ul>
+        </div>
+    <button [disabled]="submittingForm || resourceForm.invalid" type="submit" class="btn btn-dark btn-lg float-end mt-3">Salvar</button>
+</form>
