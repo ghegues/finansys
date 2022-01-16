@@ -1,0 +1,6 @@
+<div *ngIf="serverErrorMessages.length > 0" class="alert alert-danger mt-4">
+    <strong>Erro no servidor</strong>
+    <ul *ngFor="let erro of serverErrorMessages ">
+        <li> {{erro}} </li>
+    </ul>
+</div>
