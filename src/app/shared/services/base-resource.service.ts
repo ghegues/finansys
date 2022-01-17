@@ -19,7 +19,7 @@ export abstract class BaseResourceService<T extends BaseResourceModel> {
 
   
   getAll():Observable<T[]>{
-    return this.http.get<any[]>(this.apiPath).pipe(
+    return this.http.get<T[]>(this.apiPath).pipe(
         map(this.jsonDataToResources.bind(this)),      
         catchError(this.handleError)
     );
