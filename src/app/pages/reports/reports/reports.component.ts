@@ -47,9 +47,9 @@ export class ReportsComponent implements OnInit {
     private entryService: EntryService) { }
 
   ngOnInit(): void {
-   this.categoryService.getAll().subscribe(
-     categories => this.categories = categories
-   );
+  //  this.categoryService.getAll().subscribe(
+  //    categories => this.categories = categories
+  //  );
   }
 
   generateReports() {

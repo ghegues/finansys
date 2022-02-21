@@ -1,19 +1,21 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable, throwError} from 'rxjs'
+import { BehaviorSubject, Observable, throwError} from 'rxjs'
 import { Injector } from '@angular/core'; 
 import { BaseResourceModel } from '../models/base-resource.model';
-import { catchError, map } from 'rxjs/operators';
+import { catchError, map, tap } from 'rxjs/operators';
 
 export abstract class BaseResourceService<T extends BaseResourceModel> {
 
 
     protected http: HttpClient;
+    private subject = new BehaviorSubject<T[]>([]);
 
+    resources$ : Observable<T[]> = this.subject.asObservable();
     constructor(
         protected apiPath: string, 
         protected injector: Injector, 
         protected jsonDataToResourceFn: (jsonData: any) => T) 
-    { 
+    {
         this.http = injector.get(HttpClient);
     }
 
@@ -21,7 +23,8 @@ export abstract class BaseResourceService<T extends BaseResourceModel> {
   getAll():Observable<T[]>{
     return this.http.get<T[]>(this.apiPath).pipe(
         map(this.jsonDataToResources.bind(this)),      
-        catchError(this.handleError)
+        catchError(this.handleError),
+        tap(resources => this.subject.next(resources))
     );
   }
 
@@ -41,10 +44,25 @@ export abstract class BaseResourceService<T extends BaseResourceModel> {
   }
 
   update(resource: T): Observable<T>{
+
+    const resources = this.subject.getValue();
+
+    const index = resources.findIndex(r => r.id == resource.id);
+
+    const newResource: T = {
+      ...resources[index],
+      ...resource
+    };
+
+    const newCourses: T[] = resources.slice(0);
+
     const Url = `${this.apiPath}/${resource.id}`;
     return this.http.put(this.apiPath, resource).pipe(
       map(() => resource),
-      catchError(this.handleError)
+      catchError(this.handleError),
+      tap(() => {
+        this.subject.next(newCourses);
+      }),
     );
   }
 

@@ -7,6 +7,7 @@ import { IMaskModule } from 'angular-imask';
 import { Category } from '../../categories/shared/category.model';
 import { CategoryService } from '../../categories/shared/category.service';
 import { BaseResourceFormComponent } from 'src/app/shared/components/base-resource-form/base-resource-form.component';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-entry-form',
@@ -16,7 +17,7 @@ import { BaseResourceFormComponent } from 'src/app/shared/components/base-resour
 
 export class EntryFormComponent extends BaseResourceFormComponent<Entry> implements OnInit {
 
-  categories: Array<Category> = [];
+  categories$: Observable<Category[]>;
 
   imaskConfig = {
     mask: Number,
@@ -54,9 +55,7 @@ export class EntryFormComponent extends BaseResourceFormComponent<Entry> impleme
   }
   
   private loadCategories() {
-    this.categoryService.getAll().subscribe(
-      categories => this.categories = categories
-    )
+    this.categories$ = this.categoryService.getAll();
   }
  
   protected buildResourceForm() {

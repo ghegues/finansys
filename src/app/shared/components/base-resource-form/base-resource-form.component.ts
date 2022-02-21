@@ -1,7 +1,8 @@
 import {  OnInit, AfterContentChecked, Component, Injector, Injectable, Directive } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { switchMap } from 'rxjs/operators';
+import { Observable, throwError } from 'rxjs';
+import { catchError, switchMap, tap } from 'rxjs/operators';
 import * as toastr from 'toastr';
 import { BaseResourceModel } from '../../models/base-resource.model';
 import { BaseResourceService } from '../../services/base-resource.service';
@@ -78,10 +79,10 @@ export abstract class BaseResourceFormComponent<T extends BaseResourceModel> imp
     const resource: T = this.jsonDataToResourceFn(this.resourceForm.value);
     
     this.resourceService.update(resource)
-      .subscribe(
-        category => this.actionsForSuccess(category),
-        error => this.actionForError(error)
-      )
+      .pipe(
+        tap(resource => this.actionsForSuccess(resource)),
+        catchError(this.actionForError)
+      ).subscribe()
   }
   
   //redirect/reload component page
@@ -95,7 +96,7 @@ export abstract class BaseResourceFormComponent<T extends BaseResourceModel> imp
     );
   }
 
-  protected actionForError(error: any){
+  protected actionForError(error: any):Observable<any>{
     toastr.error("Ocorreu um erro ao processar sua solicitação!");
 
     this.submittingForm = false;
@@ -104,7 +105,7 @@ export abstract class BaseResourceFormComponent<T extends BaseResourceModel> imp
       this.serverErrorMessages = JSON.parse(error._body).errors
     else
       this.serverErrorMessages = ["Falha na comunicação com o servidor. Por favor, tente mais tarde."]
-    
+    return throwError(error);
   }
 
   protected loadResource() {

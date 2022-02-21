@@ -61,7 +61,7 @@
         <div class="col-md-2">
           <div class="form-floating">
             <select name="categoryId" id="categoryId" formControlName="categoryId" class="form-select">
-              <option *ngFor="let category of categories" [value]="category.id">{{ category.name }}</option>
+              <option *ngFor="let category of categories$ | async" [value]="category.id">{{ category.name }}</option>
             </select>
 
             <label for="categoryId">Categoria</label>

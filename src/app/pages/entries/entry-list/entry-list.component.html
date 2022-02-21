@@ -21,7 +21,7 @@
         </tr>
     </thead>
     <tbody>
-        <tr *ngFor="let entry of resources">
+        <tr *ngFor="let entry of resources$ | async">
             <td>
                 <strong>{{entry.name}}</strong><br>
                 <small class="text-success">{{entry.date}}</small><br>
